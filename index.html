@@ -1227,7 +1227,7 @@
         </div>
     </footer>
 
-        <!-- JavaScript File -->
+    <!-- JavaScript File -->
     <script>
         const drawerOpenBtn = document.getElementById('drawerOpenBtn');
         const drawerCloseBtn = document.getElementById('drawerCloseBtn');
@@ -1265,39 +1265,16 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Google Sheet & Duplicate Prevention Trigger
+        // MailTo Pre-Registration Trigger
         function handlePreRegSubmit(event) {
             event.preventDefault();
-
-            // Browser level check (1 user/browser restriction)
-            if (localStorage.getItem('hasRegistered') === 'true') {
-                alert("Aap pehle hi pre-register kar chuke hain!");
-                return;
-            }
-
             const fullName = document.getElementById('fullName').value.trim();
             const emailTo = "shopping360official@gmail.com";
             const subject = "Pre-registration";
-            const scriptURL = "https://script.google.com/macros/s/AKfycbyjxq0Gt7BEFkESBem_UvxCU1gGhpNVdKlGblJXz6g8BiXTH53uzEeG_HklSzXvGtj9/exec";
+            const body = `Pre-registration Details:%0D%0A%0D%0AFull Name: ${encodeURIComponent(fullName)}%0D%0AEmail: ${encodeURIComponent(emailTo)}`;
             
-            fetch(scriptURL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: emailTo, fullName: fullName })
-            }).then(() => {
-                // Save localStorage so they can't submit again on same browser
-                localStorage.setItem('hasRegistered', 'true');
-
-                const body = Pre-registration Details:%0D%0A%0D%0AFull Name: ${encodeURIComponent(fullName)}%0D%0AEmail: ${encodeURIComponent(emailTo)};
-                window.location.href = mailto:${emailTo}?subject=${encodeURIComponent(subject)}&body=${body};
-            }).catch(error => {
-                console.error('Error!', error.message);
-                const body = Pre-registration Details:%0D%0A%0D%0AFull Name: ${encodeURIComponent(fullName)}%0D%0AEmail: ${encodeURIComponent(emailTo)};
-                window.location.href = mailto:${emailTo}?subject=${encodeURIComponent(subject)}&body=${body};
-            });
+            window.location.href = `mailto:${emailTo}?subject=${encodeURIComponent(subject)}&body=${body}`;
         }
     </script>
-    
 </body>
 </html>
