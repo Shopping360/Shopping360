@@ -1015,24 +1015,26 @@
                 </div>
             </div>
 
-            <!-- Activated Pre-Registration MailTo Form -->
+            <!-- Pre-Registration Form Updated with Customer Email Input -->
             <div class="notice-card" style="text-align: left;">
                 <h3 style="text-align: center;">Pre-Registration Form</h3>
-                <p style="text-align: center; margin-bottom: 24px;">Enter your name below to instantly pre-fill your application email.</p>
+                <p style="text-align: center; margin-bottom: 24px;">Enter your details below to pre-register and instantly open your application email.</p>
                 
                 <form id="preRegForm" onsubmit="handlePreRegSubmit(event)">
-    <div class="form-group">
-        <label for="fullName">Full Name *</label>
-        <input type="text" id="fullName" class="form-control" placeholder="Enter your full name" required>
-    </div>
-    <div class="form-group">
-        <label for="customerEmail">Your Email *</label>
-        <input type="email" id="customerEmail" class="form-control" placeholder="Enter your email" required>
-    </div>
-    <div style="text-align: center; margin-top: 30px;">
-        <button type="submit" class="btn">[ Pre-Registration ]</button>
-    </div>
-</form>
+                    <div class="form-group">
+                        <label for="fullName">Full Name *</label>
+                        <input type="text" id="fullName" class="form-control" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customerEmail">Your Email *</label>
+                        <input type="email" id="customerEmail" class="form-control" placeholder="Enter your email address" required>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button type="submit" class="btn">[ Pre-Registration ]</button>
+                    </div>
+                </form>
             </div>
         </div>
     </section>
@@ -1263,34 +1265,48 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-function handlePreRegSubmit(event) {
-    event.preventDefault();
+        // Updated Pre-Registration Handler with Google Sheet & LocalStorage restrictions
+        function handlePreRegSubmit(event) {
+            event.preventDefault();
 
-    if (localStorage.getItem('hasPreRegistered') === 'true') {
-        alert("You have already pre-registered!");
-        return;
-    }
+            // 1. Check if same device/browser already registered
+            if (localStorage.getItem('hasPreRegistered') === 'true') {
+                alert("You have already pre-registered from this device!");
+                return;
+            }
 
-    const fullName = document.getElementById('fullName').value.trim();
-    const customerEmail = document.getElementById('customerEmail').value.trim();
-    const scriptURL = "https://script.google.com/macros/s/AKfycbyjxq0Gt7BEFkESBem_UvxCU1gGhpNVdKlGblJXz6g8BiXTH53uzEeG_HklSzXvGtj9/exec"; // PASTE LINK HERE
+            const fullName = document.getElementById('fullName').value.trim();
+            const customerEmail = document.getElementById('customerEmail').value.trim();
 
-    fetch(scriptURL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: customerEmail, fullName: fullName })
-    }).then(() => {
-        localStorage.setItem('hasPreRegistered', 'true');
-        alert("Success! Now sending email.");
-        const subject = "Pre-registration";
-        const body = Full Name: ${fullName}%0D%0AEmail: ${customerEmail};
-        window.location.href = mailto:shopping360official@gmail.com?subject=${subject}&body=${body};
-    }).catch(error => {
-        alert("Error occurred. Please try again.");
-    });
-}
-        
+            if (!fullName || !customerEmail) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            // 2. Replace with your actual Google Apps Script Web App URL ending with /exec
+            const scriptURL = "https://script.google.com/macros/s/AKfycbyjxq0Gt7BEFkESBem_UvxCU1gGhpNVdKlGblJXz6g8BiXTH53uzEeG_HklSzXvGtj9/exec"; 
+
+            // 3. Send data to Google Sheet
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: customerEmail, fullName: fullName })
+            }).then(() => {
+                // Lock this device
+                localStorage.setItem('hasPreRegistered', 'true');
+
+                // 4. Open mail client to send email
+                const emailTo = "shopping360official@gmail.com";
+                const subject = "Pre-registration";
+                const body = `Pre-registration Details:%0D%0A%0D%0AFull Name: ${encodeURIComponent(fullName)}%0D%0AEmail: ${encodeURIComponent(customerEmail)}`;
+                
+                window.location.href = `mailto:${emailTo}?subject=${encodeURIComponent(subject)}&body=${body}`;
+            }).catch(error => {
+                console.error('Error!', error);
+                alert("An error occurred. Please try again.");
+            });
+        }
     </script>
 </body>
 </html>
