@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping360 | B2B Print-on-Demand Solutions</title>
+    <!-- Google Fonts: Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* CSS Color & Theme Variables */
+        :root {
+            --primary: #162232;
+            --secondary: #FEC503;
+            --bg-body: #f4f6f8;
+            --bg-white: #ffffff;
+            --text-main: #2d3748;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --transition: all 0.25s ease-in-out;
+        }
+
+        /* Reset & Global Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.7;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            width: 100%;
+        }
+
+        section {
+            padding: 80px 0;
+            display: none;
+            flex: 1;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        section.active-page {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header & Navigation Bar */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: var(--primary);
+            color: var(--bg-white);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 28px;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .drawer-btn {
+            background: none;
+            border: none;
+            color: var(--bg-white);
+            font-size: 22px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .drawer-btn:hover {
+            color: var(--secondary);
+            transform: scale(1.08);
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: clamp(1.2rem, 1.8vw, 1.45rem);
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .brand-logo i {
+            color: var(--bg-white);
+            font-size: clamp(16px, 1.5vw, 20px);
+        }
+
+        .brand-text-shopping {
+            color: var(--bg-white);
+        }
+
+        .brand-text-360 {
+            color: var(--secondary);
+        }
+
+        .header-right {
+            width: 30px;
+        }
+
+        /* Sidebar Navigation Drawer */
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(22, 34, 50, 0.6);
+            backdrop-filter: blur(3px);
+            z-index: 1100;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .drawer-sidebar {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 320px;
+            height: 100%;
+            background: var(--primary);
+            z-index: 1200;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 5px 0 25px rgba(0,0,0,0.4);
+        }
+
+        .drawer-sidebar.active {
+            left: 0;
+        }
+
+        .drawer-header {
+            padding: 24px;
+            background: rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--bg-white);
+            font-size: 1.1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .drawer-close {
+            background: none;
+            border: none;
+            color: var(--bg-white);
+            font-size: 22px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .drawer-close:hover {
+            color: var(--secondary);
+        }
+
+        .drawer-menu {
+            list-style: none;
+            padding: 20px 0;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .drawer-menu li a {
+            display: block;
+            padding: 15px 28px;
+            color: var(--bg-white);
+            text-decoration: none;
+            font-size: 0.98rem;
+            font-weight: 500;
+            transition: var(--transition);
+            border-left: 4px solid transparent;
+            cursor: pointer;
+        }
+
+        .drawer-menu li a:hover, .drawer-menu li a.active {
+            background: rgba(254, 197, 3, 0.12);
+            color: var(--secondary);
+            border-left-color: var(--secondary);
+            padding-left: 32px;
+        }
+
+        /* Hero / Page Banners */
+        .page-banner {
+            background: linear-gradient(135deg, var(--primary) 0%, #1f2d42 100%);
+            color: var(--bg-white);
+            padding: 140px 0 80px;
+            text-align: center;
+            border-bottom: 4px solid var(--secondary);
+        }
+
+        .page-banner h1 {
+            font-size: clamp(2rem, 3.8vw, 3.1rem);
+            font-weight: 800;
+            margin-bottom: 16px;
+            line-height: 1.25;
+        }
+
+        .page-banner h1 span {
+            color: var(--secondary);
+        }
+
+        .page-banner p {
+            font-size: clamp(1rem, 1.6vw, 1.2rem);
+            max-width: 780px;
+            margin: 0 auto;
+            opacity: 0.92;
+            line-height: 1.6;
+        }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(254, 197, 3, 0.15);
+            color: var(--secondary);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+            border: 1px solid var(--secondary);
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--secondary);
+            color: var(--primary);
+            padding: 14px 32px;
+            border-radius: 6px;
+            font-size: 0.98rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(254, 197, 3, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(254, 197, 3, 0.5);
+            background: #e6b102;
+        }
+
+        /* Section Spacing & Headings */
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(1.7rem, 2.8vw, 2.4rem);
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: clamp(1rem, 1.4vw, 1.12rem);
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            width: 100%;
+        }
+
+        /* Cards Style */
+        .card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 36px 28px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+            transition: var(--transition);
+            border-top: 4px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(22, 34, 50, 0.1);
+            border-top-color: var(--secondary);
+        }
+
+        .card i.card-icon {
+            font-size: 40px;
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            font-size: clamp(1.15rem, 1.5vw, 1.3rem);
+            color: var(--primary);
+            margin-bottom: 16px;
+            font-weight: 700;
+            line-height: 1.35;
+        }
+
+        .bullet-list {
+            list-style: none;
+        }
+
+        .bullet-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 12px;
+            color: var(--text-muted);
+            font-size: clamp(0.92rem, 1.2vw, 1rem);
+            line-height: 1.5;
+        }
+
+        .bullet-list li::before {
+            content: "✔";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        /* Workflow Grid */
+        .workflow-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            counter-reset: step;
+        }
+
+        .workflow-card {
+            background: var(--bg-white);
+            padding: 36px 28px;
+            border-radius: 12px;
+            position: relative;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border: 1px solid var(--border-color);
+            height: 100%;
+        }
+
+        .workflow-card:hover {
+            background: var(--primary);
+            color: var(--bg-white);
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 25px rgba(22, 34, 50, 0.15);
+        }
+
+        .workflow-card:hover h3, .workflow-card:hover p {
+            color: var(--bg-white);
+        }
+
+        .workflow-card::before {
+            counter-increment: step;
+            content: "0" counter(step);
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            font-weight: 800;
+            color: rgba(22, 34, 50, 0.08);
+        }
+
+        .workflow-card h3 {
+            font-size: clamp(1.1rem, 1.4vw, 1.2rem);
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .workflow-card p {
+            font-size: clamp(0.9rem, 1.2vw, 0.98rem);
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Pricing Box Component */
+        .pricing-box {
+            background: var(--bg-white);
+            max-width: 650px;
+            margin: 0 auto;
+            border-radius: 16px;
+            padding: 55px 40px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.06);
+            border: 2px solid var(--secondary);
+            text-align: center;
+        }
+
+        .price-tag {
+            font-size: clamp(2.5rem, 4.5vw, 3.4rem);
+            font-weight: 800;
+            color: var(--primary);
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .price-tag span {
+            font-size: clamp(1rem, 1.3vw, 1.15rem);
+            color: var(--text-muted);
+            text-decoration: line-through;
+            font-weight: 500;
+        }
+
+        .price-tag em {
+            font-style: normal;
+            font-size: clamp(0.9rem, 1.2vw, 1rem);
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 700;
+        }
+
+        /* Comparison Tables */
+        .table-wrapper-block {
+            margin-bottom: 50px;
+        }
+
+        .table-wrapper-block h3 {
+            font-size: clamp(1.15rem, 1.6vw, 1.35rem);
+            color: var(--primary);
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+        }
+
+        table.comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            min-width: 700px;
+        }
+
+        table.comparison-table th, table.comparison-table td {
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: clamp(0.9rem, 1.2vw, 0.98rem);
+        }
+
+        table.comparison-table th {
+            background: var(--primary);
+            color: var(--bg-white);
+            font-weight: 600;
+        }
+
+        table.comparison-table tr:hover {
+            background: #fafbfc;
+        }
+
+        .check-red {
+            color: #e53e3e;
+            font-weight: bold;
+        }
+
+        .check-green {
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        /* Notice & Info Cards / Forms */
+        .notice-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-left: 6px solid var(--secondary);
+            padding: 40px 30px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+        }
+
+        .notice-card h3 {
+            color: var(--primary);
+            font-size: clamp(1.25rem, 2.1vw, 1.55rem);
+            margin-bottom: 14px;
+            font-weight: 700;
+        }
+
+        .notice-card p {
+            color: var(--text-muted);
+            font-size: clamp(0.95rem, 1.3vw, 1.05rem);
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            color: var(--text-main);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(254, 197, 3, 0.15);
+        }
+
+        /* Contact & Social Groups */
+        .contact-link, .social-med-link {
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .contact-link:hover {
+            color: var(--secondary) !important;
+        }
+
+        .vertical-social-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 16px;
+            align-items: center;
+        }
+
+        .social-med-link {
+            background: var(--primary);
+            color: var(--bg-white);
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 240px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .social-med-link:hover {
+            background: var(--secondary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* About Us Leadership Layout */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .about-icon-title {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .about-icon-title h3 {
+            margin-bottom: 0;
+        }
+
+        .leadership-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .leader-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .leader-avatar {
+            font-size: 28px;
+            color: var(--primary);
+            background: rgba(254, 197, 3, 0.2);
+            padding: 12px;
+            border-radius: 50%;
+            min-width: 52px;
+            text-align: center;
+        }
+
+        .leader-item strong {
+            display: block;
+            font-size: clamp(0.92rem, 1.2vw, 1.02rem);
+            color: var(--primary);
+            margin-bottom: 3px;
+        }
+
+        .leader-role {
+            font-size: clamp(0.82rem, 1.1vw, 0.9rem);
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Footer Section */
+        footer {
+            background: var(--primary);
+            color: var(--bg-white);
+            padding: 60px 0 24px;
+            margin-top: auto;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 35px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 16px;
+        }
+
+        .social-icons a {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 44px;
+            height: 44px;
+            background: rgba(255,255,255,0.08);
+            color: var(--bg-white);
+            border-radius: 50%;
+            font-size: 17px;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .social-icons a:hover {
+            background: var(--secondary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .footer-links span {
+            color: #a0aec0;
+            font-size: clamp(0.85rem, 1.1vw, 0.92rem);
+            cursor: default;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 24px;
+            font-size: clamp(0.82rem, 1.1vw, 0.88rem);
+            color: #a0aec0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-left">
+            <button class="drawer-btn" id="drawerOpenBtn" aria-label="Open Drawer">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <a class="brand-logo" onclick="switchPage('home')">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="brand-text-shopping">Shopping</span><span class="brand-text-360">360</span>
+            </a>
+        </div>
+        <div class="header-right"></div>
+    </header>
+
+    <!-- Drawer Navigation Sidebar -->
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <div class="drawer-sidebar" id="drawerSidebar">
+        <div class="drawer-header">
+            <h3>Menu</h3>
+            <button class="drawer-close" id="drawerCloseBtn" aria-label="Close Drawer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <ul class="drawer-menu">
+            <li><a onclick="switchPage('home')" id="menu-home" class="active">Home</a></li>
+            <li><a onclick="switchPage('how-it-works')" id="menu-how-it-works">How It Works</a></li>
+            <li><a onclick="switchPage('pricing')" id="menu-pricing">Pricing</a></li>
+            <li><a onclick="switchPage('become-rep')" id="menu-become-rep">Become a Sales Representative</a></li>
+            <li><a onclick="switchPage('catalog')" id="menu-catalog">Catalog</a></li>
+            <li><a onclick="switchPage('contact')" id="menu-contact">Contact Us</a></li>
+            <li><a onclick="switchPage('about')" id="menu-about">About Us</a></li>
+            <li><a onclick="switchPage('login')" id="menu-login">Log In</a></li>
+        </ul>
+    </div>
+
+    <!-- ================= PAGE 1: HOME ================= -->
+    <section id="page-home" class="active-page">
+        <div class="page-banner">
+            <div class="container">
+                <span class="badge-tag">🇺🇸 USA Only | B2B Solutions</span>
+                <h1>Print-on-Demand Built for <span>Independent Sales Representatives</span></h1>
+                <p>You sell. We handle the rest. Your ready-to-sell print-on-demand partner for bulk orders.</p>
+                <br><br>
+                <button class="btn" onclick="switchPage('become-rep')">Pre-Registration Now 🚀</button>
+            </div>
+        </div>
+
+        <div class="container" style="margin-top: 80px;">
+            <div class="section-header">
+                <h2>Platform Core Offerings</h2>
+                <p>Engineered to scale your offline B2B sales network effortlessly.</p>
+            </div>
+            <div class="grid-3">
+                <div class="card">
+                    <i class="fa-solid fa-boxes-stacked card-icon"></i>
+                    <h3>600+ Exclusive Products</h3>
+                    <ul class="bullet-list">
+                        <li>Apparel: Men, Women, Youth, Kids</li>
+                        <li>Accessories & Home & Living</li>
+                        <li>100% exclusive—not available on public marketplaces</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-shield-halved card-icon"></i>
+                    <h3>Zero Inventory & Risk</h3>
+                    <p style="color:var(--text-muted); font-size:0.95rem; margin-top:12px; line-height:1.6;">Secure customer orders first, then place production. Eliminate upfront capital requirements and dead stock risk entirely.</p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-network-wired card-icon"></i>
+                    <h3>Seamless Infrastructure</h3>
+                    <ul class="bullet-list">
+                        <li>Direct API supplier integration</li>
+                        <li>Custom brand labeling and mockups</li>
+                        <li>Automated fulfillment routing</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container" style="margin-top: 80px;">
+            <div class="section-header">
+                <h2>Competitive Advantage & Comparisons</h2>
+                <p>See why top sales professionals partner with Shopping360</p>
+            </div>
+            
+            <div class="table-wrapper-block">
+                <h3>Traditional B2B Wholesale vs. Our Custom B2B Model</h3>
+                <div class="table-responsive">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Traditional B2B Wholesale</th>
+                                <th>Our Custom B2B Model</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Upfront Inventory Cost</strong></td>
+                                <td><span class="check-red">❌ High (Thousands for bulk stock)</span></td>
+                                <td><span class="check-green">✅ Zero Upfront Production Costs</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Financial Risk</strong></td>
+                                <td><span class="check-red">❌ Massive risk of dead stock</span></td>
+                                <td><span class="check-green">✅ None (Produce after order secure)</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Brand Ownership</strong></td>
+                                <td><span class="check-red">❌ Selling manufacturer brands</span></td>
+                                <td><span class="check-green">✅ 100% Your Own Custom Brand</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Catalog Variety</strong></td>
+                                <td><span class="check-red">❌ Limited fixed production runs</span></td>
+                                <td><span class="check-green">✅ 600+ Exclusive Products</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Fulfillment & Logistics</strong></td>
+                                <td><span class="check-red">❌ Heavy manual warehousing & overhead</span></td>
+                                <td><span class="check-green">✅ Fully Automated API Execution</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="table-wrapper-block">
+                <h3>Standard DIY POD vs. Our Sales Representative System</h3>
+                <div class="table-responsive">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Standard DIY POD (Printful/Printify)</th>
+                                <th>Our B2B Sales Representative System</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Target Audience</strong></td>
+                                <td><span class="check-red">❌ Individual B2C online shoppers</span></td>
+                                <td><span class="check-green">✅ Offline Retail Stores & Boutiques</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Marketing Burden</strong></td>
+                                <td><span class="check-red">❌ Expensive Facebook/Google Ads</span></td>
+                                <td><span class="check-green">✅ Zero Ad Spend (Leverage buyer network)</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Design Requirements</strong></td>
+                                <td><span class="check-red">❌ Self-design or hire freelancers</span></td>
+                                <td><span class="check-green">✅ Ready-to-sell exclusive catalog</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Order Mechanism</strong></td>
+                                <td><span class="check-red">❌ Single item public checkouts</span></td>
+                                <td><span class="check-green">✅ Bulk & Multi-Unit Quota Orders</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Sales Validation</strong></td>
+                                <td><span class="check-red">❌ Speculative internet traffic</span></td>
+                                <td><span class="check-green">✅ Pitching physical samples to stores</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= PAGE 2: HOW IT WORKS ================= -->
+    <section id="page-how-it-works">
+        <div class="page-banner">
+            <div class="container">
+                <span class="badge-tag">🔄 Seamless Process</span>
+                <h1>How It <span>Works</span></h1>
+                <p>An end-to-end operational blueprint designed for maximum B2B efficiency.</p>
+            </div>
+        </div>
+
+        <div class="container" style="margin-top: 80px;">
+            <div class="section-header">
+                <h2>Operational Workflow Steps</h2>
+                <p>From integration to direct delivery</p>
+            </div>
+            <div class="workflow-grid">
+                <div class="workflow-card">
+                    <h3>Subscribe & Integrate</h3>
+                    <p>Connect your Printful or Printify account credentials securely via system API.</p>
+                </div>
+                <div class="workflow-card">
+                    <h3>Show Products</h3>
+                    <p>Use high-end mockups or physical samples to pitch local offline retailers.</p>
+                </div>
+                <div class="workflow-card">
+                    <h3>Get Bulk Orders</h3>
+                    <p>Collect multi-unit purchase orders directly from your retail customers.</p>
+                </div>
+                <div class="workflow-card">
+                    <h3>Submit Order</h3>
+                    <p>Submit gathered orders through the Shopping360 system dashboard.</p>
+                </div>
+                <div class="workflow-card">
+                    <h3>We Forward Order</h3>
+                    <p>We route and sync fulfillment requirements to Printful / Printify.</p>
+                </div>
+                <div class="workflow-card">
+                    <h3>Supplier Delivery</h3>
+                    <p>Selected supplier manufactures and delivers directly to your retail client.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= PAGE 3: PRICING ================= -->
+    <section id="page-pricing">
+        <div class="page-banner">
+            <div class="container">
+                <span class="badge-tag">💎 Transparent Model</span>
+                <h1>Sales Representative <span>Pricing</span></h1>
+                <p>High-margin B2B profit structure with strict allocation policies.</p>
+            </div>
+        </div>
+
+        <div class="container" style="margin-top: 80px;">
+            <div class="pricing-box">
+                <h3>Exclusive Representative Tier</h3>
+                <div class="price-tag">
+                    <span>$10</span> $5 <em>50% OFF</em>
+                </div>
+                <p style="font-size: 1.05rem;"><strong>Our Subscription price is $5 per Unit Sold</strong></p>
+                <br>
+                <ul class="bullet-list" style="text-align: left; display: inline-block;">
+                    <li><strong>Available Quota:</strong> 50,000 units only</li>
+                    <li><strong>Validity Period:</strong> 1 Financial Year (1 April to 31 March)</li>
+                </ul>
+                <div style="margin-top: 35px;">
+                    <button class="btn" onclick="switchPage('become-rep')">Secure Your Allocation</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= PAGE 4: BECOME A SALES REPRESENTATIVE ================= -->
+    <section id="page-become-rep">
+        <div class="page-banner">
+            <div class="container">
+                <span class="badge-tag">🤝 Partnership Opportunity</span>
+                <h1>Become a Sales <span>Representative</span></h1>
+                <p>Join our elite network of U.S. independent sales professionals.</p>
+            </div>
+        </div>
+
+        <div class="container" style="margin-top: 80px;">
+            <div class="section-header">
+                <h2>Target Candidate & Benefits</h2>
+                <p>Built for experienced professionals with offline retail access</p>
+            </div>
+            
+            <div class="grid-3" style="margin-bottom: 50px;">
+                <div class="card">
+                    <h3><i class="fa-solid fa-bullseye" style="color:var(--secondary)"></i> Target Profile</h3>
+                    <p style="color:var(--text-muted); font-size:0.95rem; line-height:1.6;">Experienced U.S. independent sales representatives with established professional access to offline retail stores, boutiques, and gift shops.</p>
+                </div>
+                <div class="card">
+                    <h3><i class="fa-solid fa-star" style="color:var(--secondary)"></i> Key Benefits & Features</h3>
+                    <ul class="bullet-list">
+                        <li>Exclusive 600+ catalog unavailable anywhere else</li>
+                        <li>Free digital catalog & digital sample support</li>
+                        <li>Physical sample buy personally not free</li>
+                        <li>Take subscription for Printful printify if you want maximum discount</li>
+                        <li>Direct API integration with supplier credentials</li>
+                        <li>Zero capital tied up in warehousing or stock</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3><i class="fa-solid fa-list-check" style="color:var(--secondary)"></i> Technical Prerequisites</h3>
+                    <ul class="bullet-list">
+                        <li>Active Printful/Printify account with auto-pay enabled</li>
+                        <li>API token generated and ready for sync</li>
+                        <li>Brand logo in high-res 1:1 square PNG format</li>
+                        <li>Resale certificate upload for tax reduction</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Activated Pre-Registration MailTo Form -->
+            <div class="notice-card" style="text-align: left;">
+                <h3 style="text-align: center;">Pre-Registration Form</h3>
+                <p style="text-align: center; margin-bottom: 24px;">Enter your name below to instantly pre-fill your application email.</p>
+                
+                <form id="preRegForm" onsubmit="handlePreRegSubmit(event)">
+                    <div class="form-group">
+                        <label for="fullName">Full Name *</label>
+                        <input type="text" id="fullName" class="form-control" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="targetEmail">Send To Email</label>
+                        <input type="email" id="targetEmail" class="form-control" value="shopping360official@gmail.com" readonly style="background-color: #f8fafc;">
+                    </div>
+
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button type="submit" class="btn">[ Pre-Registration ]</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= PAGE 5: CATALOG ================= -->
+    <section id="page-catalog">
+        <div class="page-banner">
+            <div class="container">
+                <span class="badge-tag">📦 Exclusive Inventory</span>
+                <h1>Product <span>Catalog</span></h1>
+                <p>600+ entirely exclusive B2B products built for your retail network.</p>
+            </div>
+        </div>
+
+        <div class="container" style="margin-top: 80px;">
+            <div class="grid-3" style="margin-bottom: 50px;">
+                <div class="card">
+                    <h3>Clothing Categories</h3>
+                    <ul class="bullet-list">
+                        <li>Men's Apparel</li>
+                        <li>Women's Apparel</li>
+                        <li>Youth Apparel</li>
+                        <li>Kids' Apparel</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Lifestyle Collections</h3>
+                    <ul class="bullet-list">
+                        <li>Accessories Line</li>
+                        <li>Home & Living Products</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Supplier Network</h3>
+                    <ul class="bullet-list">
+                        <li>Integrated with Printful & Printify</li>
+                        <li>Expanding additional strategic suppliers</li>
+                        <li>Automated print provider order routing</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="notice-card" style="text-align: center;">
+                <h3>Catalog Available for Public Soon</h3>
+                <p>Our comprehensive digital catalog showcasing all 600+ exclusive items will be accessible to registered representatives shortly.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= PAGE 6: CONTACT US ================= -->
+    <section id="page-contact">
+        <div class="page-banner">
+            <div class="container">
+                <span class="badge-tag">📞 Get In Touch</span>
+                <h1>Contact <span>Us</span></h1>
+                <p>We are here to support your independent sales journey.</p>
+            </div>
+        </div>
+
+        <div class="container" style="margin-top: 80px;">
+            <div class="card" style="max-width: 750px; margin: 0 auto; text-align: center; padding: 50px 30px;">
+                <i class="fa-solid fa-headset card-icon" style="font-size: 48px;"></i>
+                <h3 style="margin-bottom: 24px;">Direct Communication Channels</h3>
+                
+                <div class="contact-methods">
+                    <p style="margin-bottom: 18px; font-size: 1.05rem;">
+                        <strong>Email Support:</strong> 
+                        <a href="mailto:shopping360official@gmail.com" class="contact-link" style="color:var(--primary); display:inline-flex; align-items:center; gap:8px; margin-left:6px;">
+                            <i class="fa-solid fa-envelope" style="color:var(--secondary)"></i> shopping360official@gmail.com
+                        </a>
+                    </p>
+                    
+                    <p style="margin-bottom: 24px; font-size: 1.05rem;">
+                        <strong>Instant Messaging:</strong><br>
+                        <span class="vertical-social-group">
+                            <a href="https://t.me/" target="_blank" class="social-med-link" aria-label="Telegram"><i class="fa-brands fa-telegram"></i> Telegram</a>
+                            <a href="https://wa.me/" target="_blank" class="social-med-link" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+                            <a href="https://m.me/" target="_blank" class="social-med-link" aria-label="Messenger"><i class="fa-brands fa-facebook-messenger"></i> Messenger</a>
+                            <a href="https://linkedin.com/" target="_blank" class="social-med-link" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i> LinkedIn</a>
+                        </span>
+                    </p>
+                </div>
+
+                <hr style="border:0; border-top:1px solid var(--border-color); margin: 30px 0;">
+                <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;"><strong>Corporate Headquarters Address:</strong><br>10, Ganesh Nagar, Jawad, Rajsamand, Rajasthan – 313324, India</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= PAGE 7: ABOUT US ================= -->
+    <section id="page-about">
+        <div class="page-banner">
+            <div class="container">
+                <span class="badge-tag">🏢 Corporate Governance</span>
+                <h1>About <span>Us</span></h1>
+                <p>Ownership structure, leadership team, and organizational mission.</p>
+            </div>
+        </div>
+
+        <div class="container" style="margin-top: 80px;">
+            <div class="about-grid">
+                <div class="card">
+                    <div class="about-icon-title">
+                        <i class="fa-solid fa-scale-balanced" style="font-size: 28px; color: var(--secondary);"></i>
+                        <h3>Legal Status & Ownership</h3>
+                    </div>
+                    <p style="color:var(--text-muted); font-size:0.95rem; margin-bottom:14px; line-height: 1.6;"><strong>Shared Marketing Trade Name:</strong> Shopping360 is a shared marketing trade name and is not a separate legal corporate entity.</p>
+                    <p style="color:var(--text-muted); font-size:0.95rem; line-height: 1.6;"><strong>Independent Proprietorships:</strong> Operates through three independent sole proprietors based in India who share equal rights, responsibilities, duties, and authority regarding jointly owned trade assets.</p>
+                </div>
+                
+                <div class="card">
+                    <div class="about-icon-title">
+                        <i class="fa-solid fa-users-gear" style="font-size: 28px; color: var(--secondary);"></i>
+                        <h3>Executive Leadership</h3>
+                    </div>
+                    <div class="leadership-list">
+                        <div class="leader-item">
+                            <i class="fa-solid fa-user-tie leader-avatar" aria-label="Male Proprietor in Suit"></i>
+                            <div>
+                                <strong>Gaurav Kumar Singh</strong>
+                                <span class="leader-role">Operational Head, Order Manager & Lead POD Product Designer</span>
+                            </div>
+                        </div>
+                        <div class="leader-item">
+                            <i class="fa-solid fa-user-tie leader-avatar" aria-label="Female Proprietor in Professional Suit"></i>
+                            <div>
+                                <strong>Tanisha Kaloshiya</strong>
+                                <span class="leader-role">Print-on-Demand Product Designer</span>
+                            </div>
+                        </div>
+                        <div class="leader-item">
+                            <i class="fa-solid fa-user-tie leader-avatar" aria-label="Female Proprietor in Professional Suit"></i>
+                            <div>
+                                <strong>Pushpa Devi Banshiwal</strong>
+                                <span class="leader-role">Print-on-Demand Product Designer</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="about-icon-title">
+                        <i class="fa-solid fa-bullseye" style="font-size: 28px; color: var(--secondary);"></i>
+                        <h3>Corporate Mission</h3>
+                    </div>
+                    <p style="color:var(--text-muted); font-size:0.95rem; line-height: 1.6;">To bridge the gap between high-quality American manufacturing (via Printful/Printify) and offline retail sales representatives by offering zero-inventory, exclusive product lines, and seamless automated order management.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= PAGE 8: LOG IN ================= -->
+    <section id="page-login">
+        <div class="page-banner">
+            <div class="container">
+                <span class="badge-tag">🔐 Representative Portal</span>
+                <h1>Log <span>In</span></h1>
+                <p>Secure dashboard access for active independent sales representatives.</p>
+            </div>
+        </div>
+
+        <div class="container" style="margin-top: 80px;">
+            <div class="notice-card" style="text-align: center;">
+                <h3>Secure Portal Access — Coming Soon</h3>
+                <p style="margin-bottom: 18px;">Active representatives will soon be able to securely log in to manage orders, track shipments, check subscription quotas, and oversee supplier API integrations.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="social-icons">
+                    <a href="https://www.instagram.com/shopping360store" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://in.pinterest.com/shopping360store/" target="_blank" aria-label="Pinterest"><i class="fa-brands fa-pinterest-p"></i></a>
+                    <a href="https://www.facebook.com/61567516761790/" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                </div>
+                <ul class="footer-links">
+                    <li><span>Terms & Conditions</span></li>
+                    <li><span>Privacy Policy</span></li>
+                    <li><span>Cookie Policy</span></li>
+                    <li><span>Disclaimer</span></li>
+                    <li><span>Independent Sales Representative Policy</span></li>
+                </ul>
+            </div>
+            <div class="copyright">
+                Copyright © All Rights Reserved by Shopping360
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript File -->
+    <script>
+        const drawerOpenBtn = document.getElementById('drawerOpenBtn');
+        const drawerCloseBtn = document.getElementById('drawerCloseBtn');
+        const drawerSidebar = document.getElementById('drawerSidebar');
+        const drawerOverlay = document.getElementById('drawerOverlay');
+
+        function toggleDrawer() {
+            drawerSidebar.classList.toggle('active');
+            drawerOverlay.classList.toggle('active');
+        }
+
+        drawerOpenBtn.addEventListener('click', toggleDrawer);
+        drawerCloseBtn.addEventListener('click', toggleDrawer);
+        drawerOverlay.addEventListener('click', toggleDrawer);
+
+        function switchPage(pageId) {
+            const pages = document.querySelectorAll('section');
+            pages.forEach(p => p.classList.remove('active-page'));
+
+            const target = document.getElementById('page-' + pageId);
+            if (target) {
+                target.classList.add('active-page');
+            }
+
+            const menuLinks = document.querySelectorAll('.drawer-menu a');
+            menuLinks.forEach(l => l.classList.remove('active'));
+            const activeMenu = document.getElementById('menu-' + pageId);
+            if (activeMenu) {
+                activeMenu.classList.add('active');
+            }
+
+            drawerSidebar.classList.remove('active');
+            drawerOverlay.classList.remove('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // MailTo Pre-Registration Trigger
+        function handlePreRegSubmit(event) {
+            event.preventDefault();
+            const fullName = document.getElementById('fullName').value.trim();
+            const emailTo = "shopping360official@gmail.com";
+            const subject = "Pre-registration";
+            const body = `Pre-registration Details:%0D%0A%0D%0AFull Name: ${encodeURIComponent(fullName)}%0D%0AEmail: ${encodeURIComponent(emailTo)}`;
+            
+            window.location.href = `mailto:${emailTo}?subject=${encodeURIComponent(subject)}&body=${body}`;
+        }
+    </script>
+</body>
+</html>
