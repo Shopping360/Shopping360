@@ -1224,6 +1224,35 @@
             // Scroll to top smoothly
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
+        // function handlePreRegSubmit(event) {
+            event.preventDefault();
+
+            const fullName = document.getElementById('fullName').value.trim();
+            const emailInput = document.getElementById('applicantEmail').value.trim();
+            
+            // Browser level check (1 mobile/browser se dubara rokne ke liye)
+            if (localStorage.getItem('hasRegistered') === 'true') {
+                alert("Aap is device se pehle hi register kar chuke hain!");
+                return;
+            }
+
+            const scriptURL = "https://script.google.com/macros/s/AKfycbyjxq0Gt7BEFkESBem_UvxCU1gGhpNVdKlGblJXz6g8BiXTH53uzEeG_HklSzXvGtj9/exec"; 
+            // Note: Upar wale URL ki jagah apna wahi purana web app URL paste karein jo aapka pehle se tha.
+
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: emailInput, fullName: fullName })
+            }).then(() => {
+                localStorage.setItem('hasRegistered', 'true');
+                alert("Pre-registration successful!");
+                location.reload();
+            }).catch(error => {
+                console.error('Error!', error);
+            });
+        }
     </script>
 </body>
 </html>
